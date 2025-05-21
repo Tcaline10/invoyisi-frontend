@@ -1,0 +1,22 @@
+{
+  "name": "invoiceai-backend",
+  "version": "0.1.0",
+  "description": "Backend API for InvoiceAI - A smart invoice management system",
+  "main": "app/main.py",
+  "scripts": {
+    "start": "uvicorn app.main:app --reload --host 0.0.0.0 --port 8000",
+    "test": "pytest",
+    "migrate": "alembic upgrade head",
+    "makemigrations": "alembic revision --autogenerate -m",
+    "init-db": "python init_db.py",
+    "test-connection": "python test_supabase_connection.py"
+  },
+  "keywords": [
+    "fastapi",
+    "supabase",
+    "invoice",
+    "ai"
+  ],
+  "author": "Mappa Tetong Caline Staelle",
+  "license": "MIT"
+}
