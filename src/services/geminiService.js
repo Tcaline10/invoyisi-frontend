@@ -1,7 +1,8 @@
 import axios from 'axios';
 
-// API base URL
-const API_BASE_URL = '/api/gemini';
+// API base URL - use environment variable for backend URL or fallback to proxy
+const BACKEND_URL = import.meta.env.VITE_API_URL || '';
+const API_BASE_URL = BACKEND_URL ? `${BACKEND_URL}/api/gemini` : '/api/gemini';
 
 /**
  * Service for interacting with the Google Gemini API
