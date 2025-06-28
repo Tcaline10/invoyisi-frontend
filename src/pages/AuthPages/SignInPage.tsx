@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import Button from '../../components/ui/Button';
@@ -12,27 +12,49 @@ const SignInPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Import useAuth hook
-  const { login } = useAuth();
+  const { login, isAuthenticated, isLoading } = useAuth();
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      console.log('User already authenticated, redirecting to dashboard');
+      navigate('/app/dashboard', { replace: true });
+    }
+  }, [isAuthenticated, isLoading, navigate]);
+
+  // Show loading while checking authentication
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+        <div className="flex flex-col items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-900 mb-4"></div>
+          <p className="text-gray-600">Checking authentication...</p>
+        </div>
+      </div>
+    );
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    setIsLoading(true);
+    setIsSubmitting(true);
 
     // Basic validation
     if (!email || !password) {
       setError('Please fill in all fields');
-      setIsLoading(false);
+      setIsSubmitting(false);
       return;
     }
 
     try {
       // Use the login function from AuthContext which now uses Supabase Auth
       await login(email, password);
-      // Success message will be shown on the dashboard
+      // Navigate to dashboard after successful login
+      console.log('Login successful, navigating to dashboard');
+      navigate('/app/dashboard', { replace: true });
     } catch (err: any) {
       console.error('Login error:', err);
 
@@ -64,13 +86,13 @@ const SignInPage: React.FC = () => {
         setError(err.message || 'Login failed. Please try again.');
       }
 
-      setIsLoading(false);
+      setIsSubmitting(false);
     }
   };
 
   const handleGoogleSignIn = async () => {
     try {
-      setIsLoading(true);
+      setIsSubmitting(true);
       // Use Supabase Auth for Google sign-in
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -84,7 +106,7 @@ const SignInPage: React.FC = () => {
     } catch (err: any) {
       console.error('Google sign-in error:', err);
       setError(err.message || 'Failed to sign in with Google');
-      setIsLoading(false);
+      setIsSubmitting(false);
     }
   };
 
@@ -199,10 +221,10 @@ const SignInPage: React.FC = () => {
                 type="submit"
                 variant="primary"
                 fullWidth
-                disabled={isLoading}
+                disabled={isSubmitting}
                 className="relative"
               >
-                {isLoading ? (
+                {isSubmitting ? (
                   <span className="flex items-center justify-center">
                     <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>

@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '../components/ui/Card';
-import { CreditCard, DollarSign, Calendar, Filter, Search, RefreshCw } from 'lucide-react';
+import { CreditCard, AlertTriangle, Calendar, Filter, Search, RefreshCw } from 'lucide-react';
 import Button from '../components/ui/Button';
 import Badge from '../components/ui/Badge';
 import RecordPaymentModal from '../components/Payments/RecordPaymentModal';
@@ -100,7 +100,7 @@ const PaymentsPage: React.FC = () => {
           <Button
             variant="primary"
             size="sm"
-            icon={<DollarSign size={16} />}
+            icon={<CreditCard size={16} />}
             onClick={() => setShowRecordPaymentModal(true)}
           >
             Record Payment
@@ -114,11 +114,11 @@ const PaymentsPage: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-500">Total Received</p>
-                <h3 className="text-2xl font-bold text-gray-900">${stats.totalReceived.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</h3>
+                <h3 className="text-2xl font-bold text-gray-900">FCFA{stats.totalReceived.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</h3>
                 <p className="text-sm text-green-600">Successfully processed</p>
               </div>
               <div className="p-3 bg-green-100 rounded-full">
-                <DollarSign className="h-6 w-6 text-green-600" />
+                <CreditCard className="h-6 w-6 text-green-600" />
               </div>
             </div>
           </CardContent>
@@ -129,7 +129,7 @@ const PaymentsPage: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-500">Pending</p>
-                <h3 className="text-2xl font-bold text-gray-900">${stats.pending.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</h3>
+                <h3 className="text-2xl font-bold text-gray-900">FCFA{stats.pending.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</h3>
                 <p className="text-sm text-orange-600">{stats.pendingCount} payments pending</p>
               </div>
               <div className="p-3 bg-orange-100 rounded-full">
@@ -144,11 +144,11 @@ const PaymentsPage: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-500">Failed</p>
-                <h3 className="text-2xl font-bold text-gray-900">${stats.failed.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</h3>
+                <h3 className="text-2xl font-bold text-gray-900">FCFA{stats.failed.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</h3>
                 <p className="text-sm text-red-600">{stats.failedCount} failed payments</p>
               </div>
               <div className="p-3 bg-red-100 rounded-full">
-                <CreditCard className="h-6 w-6 text-red-600" />
+                <AlertTriangle className="h-6 w-6 text-red-600" />
               </div>
             </div>
           </CardContent>

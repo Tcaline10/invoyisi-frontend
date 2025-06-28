@@ -19,11 +19,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   // Check if user is authenticated on initial load and set up auth listener
   useEffect(() => {
+    let mounted = true;
+
     // Get initial session
     const checkAuth = async () => {
       try {
         console.log('AuthContext: Checking initial session');
         const { data, error } = await supabase.auth.getSession();
+
+        if (!mounted) return;
 
         if (error) {
           console.error('AuthContext: Error getting session:', error);
@@ -35,71 +39,57 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         console.log('AuthContext: Session exists:', !!data.session);
 
         if (data.session) {
-          try {
-            const { data: userData, error: userError } = await supabase.auth.getUser();
-
-            if (userError) {
-              console.error('AuthContext: Error getting user:', userError);
-              setUser(null);
-            } else {
-              console.log('AuthContext: User data retrieved:', userData.user?.email);
-              setUser(userData.user);
-            }
-          } catch (userError) {
-            console.error('AuthContext: Exception getting user:', userError);
-            setUser(null);
-          }
+          console.log('AuthContext: User data retrieved:', data.session.user?.email);
+          setUser(data.session.user);
         } else {
           setUser(null);
         }
       } catch (error) {
         console.error('AuthContext: Exception in checkAuth:', error);
-        setUser(null);
+        if (mounted) {
+          setUser(null);
+        }
       } finally {
-        setIsLoading(false);
+        if (mounted) {
+          setIsLoading(false);
+        }
       }
     };
-
-    checkAuth();
 
     // Set up auth state change listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        if (!mounted) return;
+
         console.log('AuthContext: Auth state changed:', event, !!session);
 
         try {
           if (session) {
-            console.log('AuthContext: Getting user data after auth change');
-            const { data, error } = await supabase.auth.getUser();
-
-            if (error) {
-              console.error('AuthContext: Error getting user after auth change:', error);
-              setUser(null);
-            } else {
-              console.log('AuthContext: User data updated:', data.user?.email);
-              setUser(data.user);
-            }
+            console.log('AuthContext: User data updated:', session.user?.email);
+            setUser(session.user);
           } else {
             console.log('AuthContext: No session, setting user to null');
             setUser(null);
           }
         } catch (error) {
           console.error('AuthContext: Exception in auth state change handler:', error);
-          setUser(null);
-        } finally {
-          setIsLoading(false);
+          if (mounted) {
+            setUser(null);
+          }
         }
       }
     );
 
+    checkAuth();
+
     // Clean up subscription on unmount
     return () => {
+      mounted = false;
       subscription.unsubscribe();
     };
   }, []);
 
   const login = async (email: string, password: string) => {
-    setIsLoading(true);
     try {
       const { error } = await supabase.auth.signInWithPassword({
         email,
@@ -113,13 +103,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     } catch (error) {
       console.error('Login error:', error);
       throw error;
-    } finally {
-      setIsLoading(false);
     }
   };
 
   const register = async (name: string, email: string, password: string) => {
-    setIsLoading(true);
     try {
       const { error } = await supabase.auth.signUp({
         email,
@@ -138,13 +125,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     } catch (error) {
       console.error('Registration error:', error);
       throw error;
-    } finally {
-      setIsLoading(false);
     }
   };
 
   const logout = async () => {
-    setIsLoading(true);
     try {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
@@ -154,8 +138,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     } catch (error) {
       console.error('Logout error:', error);
       throw error;
-    } finally {
-      setIsLoading(false);
     }
   };
 

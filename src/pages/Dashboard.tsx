@@ -220,28 +220,28 @@ const Dashboard: React.FC = () => {
   const statCards = [
     {
       title: 'Total Paid',
-      value: `$${dashboardData.totalPaid.toLocaleString()}`,
-      icon: <DollarSign size={20} />,
+      value: `FCFA${dashboardData.totalPaid.toLocaleString()}`,
+      icon: <CreditCard size={20} />,
       change: { value: '12.5%', type: 'increase' as const },
       trend: [30, 35, 45, 40, 50, 65, 70]
     },
     {
       title: 'Total Due',
-      value: `$${dashboardData.totalDue.toLocaleString()}`,
+      value: `FCFA${dashboardData.totalDue.toLocaleString()}`,
       icon: <CreditCard size={20} />,
       change: { value: '5.2%', type: 'decrease' as const },
       trend: [60, 55, 40, 45, 35, 30, 25]
     },
     {
       title: 'Overdue',
-      value: `$${dashboardData.overdue.toLocaleString()}`,
+      value: `FCFA${dashboardData.overdue.toLocaleString()}`,
       icon: <AlertTriangle size={20} />,
       change: { value: '2.1%', type: 'increase' as const },
       trend: [15, 20, 18, 25, 22, 30, 28]
     },
     {
       title: 'Upcoming',
-      value: `$${dashboardData.upcoming.toLocaleString()}`,
+      value: `FCFA${dashboardData.upcoming.toLocaleString()}`,
       icon: <Calendar size={20} />,
       change: { value: '8.3%', type: 'increase' as const },
       trend: [25, 20, 30, 35, 30, 40, 45]

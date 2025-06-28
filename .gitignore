@@ -42,3 +42,34 @@ dist-ssr
 # Cache
 .cache
 .parcel-cache
+
+# Backend/Server files (exclude from frontend)
+backend/
+server/
+sql/
+supabase/
+
+# Documentation that should be in backend
+docs/
+*.md
+!README.md
+
+# Database and migration files
+*.sql
+*.db
+*.sqlite
+
+# Python files
+*.py
+*.pyc
+__pycache__/
+requirements.txt
+alembic.ini
+
+# Shell scripts
+*.sh
+*.bat
+*.ps1
+
+# YAML configs for backend
+render.yaml

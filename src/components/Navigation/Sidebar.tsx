@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, FileText, Users, BarChart4, Settings, LogOut,
   CreditCard, Clock, Inbox, ChevronDown, ChevronRight, Info,
@@ -66,6 +66,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
 
 const Sidebar: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [expanded, setExpanded] = React.useState({
     invoices: true,
   });
@@ -146,68 +147,68 @@ const Sidebar: React.FC = () => {
       <nav className="flex-1 px-3 py-4 overflow-y-auto">
         <div className="space-y-1">
           <SidebarItem
-            to="/dashboard"
+            to="/app/dashboard"
             icon={<LayoutDashboard size={18} />}
             label="Dashboard"
-            active={location.pathname === '/' || location.pathname === '/dashboard'}
+            active={location.pathname === '/' || location.pathname === '/app/dashboard'}
           />
 
           <SidebarItem
-            to="/invoices"
+            to="/app/invoices"
             icon={<FileText size={18} />}
             label="Invoices"
-            active={location.pathname.startsWith('/invoices')}
+            active={location.pathname.startsWith('/app/invoices')}
             hasSubmenu
             expanded={expanded.invoices}
             onClick={() => toggleExpanded('invoices')}
           >
-            <Link to="/invoices" className={`block py-1 px-2 text-sm rounded ${location.pathname === '/invoices' ? 'text-blue-900 font-medium' : 'text-gray-600 hover:text-gray-900'}`}>
+            <Link to="/app/invoices" className={`block py-1 px-2 text-sm rounded ${location.pathname === '/app/invoices' ? 'text-blue-900 font-medium' : 'text-gray-600 hover:text-gray-900'}`}>
               All Invoices
             </Link>
-            <Link to="/invoices/filter/draft" className={`block py-1 px-2 text-sm rounded ${location.pathname === '/invoices/filter/draft' ? 'text-blue-900 font-medium' : 'text-gray-600 hover:text-gray-900'}`}>
+            <Link to="/app/invoices/filter/draft" className={`block py-1 px-2 text-sm rounded ${location.pathname === '/app/invoices/filter/draft' ? 'text-blue-900 font-medium' : 'text-gray-600 hover:text-gray-900'}`}>
               Drafts
             </Link>
-            <Link to="/invoices/filter/unpaid" className={`block py-1 px-2 text-sm rounded ${location.pathname === '/invoices/filter/unpaid' ? 'text-blue-900 font-medium' : 'text-gray-600 hover:text-gray-900'}`}>
+            <Link to="/app/invoices/filter/unpaid" className={`block py-1 px-2 text-sm rounded ${location.pathname === '/app/invoices/filter/unpaid' ? 'text-blue-900 font-medium' : 'text-gray-600 hover:text-gray-900'}`}>
               Unpaid
             </Link>
-            <Link to="/invoices/filter/paid" className={`block py-1 px-2 text-sm rounded ${location.pathname === '/invoices/filter/paid' ? 'text-blue-900 font-medium' : 'text-gray-600 hover:text-gray-900'}`}>
+            <Link to="/app/invoices/filter/paid" className={`block py-1 px-2 text-sm rounded ${location.pathname === '/app/invoices/filter/paid' ? 'text-blue-900 font-medium' : 'text-gray-600 hover:text-gray-900'}`}>
               Paid
             </Link>
           </SidebarItem>
 
           <SidebarItem
-            to="/clients"
+            to="/app/clients"
             icon={<Users size={18} />}
             label="Clients"
-            active={location.pathname.startsWith('/clients')}
+            active={location.pathname.startsWith('/app/clients')}
           />
 
           <SidebarItem
-            to="/payments"
+            to="/app/payments"
             icon={<CreditCard size={18} />}
             label="Payments"
-            active={location.pathname.startsWith('/payments')}
+            active={location.pathname.startsWith('/app/payments')}
           />
 
           <SidebarItem
-            to="/reports"
+            to="/app/reports"
             icon={<BarChart4 size={18} />}
             label="Reports"
-            active={location.pathname.startsWith('/reports')}
+            active={location.pathname.startsWith('/app/reports')}
           />
 
           <SidebarItem
-            to="/recurring-invoices"
+            to="/app/recurring-invoices"
             icon={<Clock size={18} />}
             label="Recurring Invoices"
-            active={location.pathname.startsWith('/recurring-invoices')}
+            active={location.pathname.startsWith('/app/recurring-invoices')}
           />
 
           <SidebarItem
-            to="/documents"
+            to="/app/documents"
             icon={<Search size={18} />}
             label="Document Processing"
-            active={location.pathname.startsWith('/documents')}
+            active={location.pathname.startsWith('/app/documents')}
           />
         </div>
 
@@ -216,10 +217,10 @@ const Sidebar: React.FC = () => {
             Settings
           </div>
           <SidebarItem
-            to="/settings"
+            to="/app/settings"
             icon={<Settings size={18} />}
             label="Settings"
-            active={location.pathname.startsWith('/settings')}
+            active={location.pathname.startsWith('/app/settings')}
           />
           <SidebarItem
             to="/about"
@@ -231,7 +232,17 @@ const Sidebar: React.FC = () => {
       </nav>
 
       <div className="px-3 py-3 border-t border-gray-100">
-        <button className="flex items-center w-full px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md transition-colors">
+        <button
+          className="flex items-center w-full px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md transition-colors"
+          onClick={async () => {
+            try {
+              await supabase.auth.signOut();
+              navigate('/signin');
+            } catch (error) {
+              console.error('Error signing out:', error);
+            }
+          }}
+        >
           <LogOut size={18} className="mr-3" />
           <span>Sign Out</span>
         </button>

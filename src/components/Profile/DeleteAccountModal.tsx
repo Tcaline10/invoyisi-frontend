@@ -94,8 +94,8 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({ isOpen, onClose
       // Sign out
       await supabase.auth.signOut();
       
-      // Redirect to login page
-      navigate('/login');
+      // Redirect to signin page
+      navigate('/signin');
     } catch (err: any) {
       setError(err.message || 'An error occurred while deleting your account');
       setLoading(false);
