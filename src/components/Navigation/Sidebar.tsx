@@ -131,7 +131,10 @@ const Sidebar: React.FC = () => {
       </div>
 
       <div className="px-4 py-2 border-b border-gray-100">
-        <div className="flex items-center py-2">
+        <button
+          className="flex items-center py-2 w-full text-left hover:bg-gray-50 rounded-md transition-colors"
+          onClick={() => navigate('/app/profile')}
+        >
           <Avatar
             src={userProfile?.avatar_url}
             name={userProfile?.full_name || userProfile?.email || 'User'}
@@ -141,7 +144,7 @@ const Sidebar: React.FC = () => {
             <div className="text-sm font-medium text-gray-900">{userProfile?.full_name || 'User'}</div>
             <div className="text-xs text-gray-500">{userProfile?.email || ''}</div>
           </div>
-        </div>
+        </button>
       </div>
 
       <nav className="flex-1 px-3 py-4 overflow-y-auto">
