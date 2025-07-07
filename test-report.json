@@ -1,0 +1,19 @@
+{
+  "timestamp": "2025-07-05T15:04:16.174Z",
+  "testSuite": "I-Invoyisi Invoice Features",
+  "version": "1.0.0",
+  "mockData": {
+    "invoice": "INV-2024-001",
+    "client": "Acme Corporation",
+    "total": 1142.5,
+    "currency": "XAF"
+  },
+  "features": [
+    "AI Invoice Categorization",
+    "Multi-Currency Support",
+    "PDF Export",
+    "Excel Export",
+    "CSV Export",
+    "Currency Conversion"
+  ]
+}

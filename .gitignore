@@ -1,0 +1,73 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependencies
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Environment variables (SENSITIVE - DO NOT COMMIT)
+.env
+.env.*
+!.env.example
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Server uploads (user generated content)
+/server/uploads/*
+!/server/uploads/.gitkeep
+
+# Build directories
+/build/
+/dist/
+
+# Cache directories
+.cache/
+.parcel-cache/
+__pycache__/
+*.pyc
+*.pyo
+
+# Python virtual environments
+venv/
+env/
+.venv/
+
+# Database files (local development)
+*.db
+*.sqlite
+*.sqlite3
+
+# OS generated files
+Thumbs.db
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+
+# IDE files
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.temp
